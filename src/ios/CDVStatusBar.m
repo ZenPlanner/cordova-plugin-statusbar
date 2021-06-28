@@ -109,6 +109,22 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     });
 }
 
+- (void)keyboardDidShow: (NSNotification *) notif
+{
+    __weak CDVStatusBar* weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [weakSelf resizeWebView];
+    });
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif
+{
+    __weak CDVStatusBar* weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [weakSelf resizeWebView];
+    });
+}
+
 - (void)pluginInitialize
 {
     // init
@@ -121,6 +137,17 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name: UIApplicationDidChangeStatusBarFrameNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cordovaViewWillAppear:) name: @"CDVViewWillAppearNotification" object:nil];
+
+    // Listen for keyboard appearances and disappearances
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
 
     _statusBarOverlaysWebView = YES; // default
 
