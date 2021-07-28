@@ -445,6 +445,14 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     }
 }
 
+- (void) refresh:(CDVInvokedUrlCommand*)command
+{
+    __weak CDVStatusBar* weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [weakSelf resizeWebView];
+    });
+}
+
 -(void)resizeStatusBarBackgroundView {
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     CGRect sbBgFrame = _statusBarBackgroundView.frame;

@@ -132,6 +132,10 @@ public class StatusBar extends CordovaPlugin {
             return true;
         }
 
+        if ("refresh".equals(action)) {
+            return true;
+        }
+
         if ("backgroundColorByHexString".equals(action)) {
             this.cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override

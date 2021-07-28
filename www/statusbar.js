@@ -93,6 +93,10 @@ var StatusBar = {
     show: function () {
         exec(null, null, "StatusBar", "show", []);
         StatusBar.isVisible = true;
+    },
+
+    refresh: function () {
+        exec(null, null, "StatusBar", "refresh", []);
     }
 
 };
